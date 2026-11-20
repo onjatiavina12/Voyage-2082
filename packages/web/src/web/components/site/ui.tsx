@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { ArrowRight, MapPin } from "lucide-react";
 import { useLang, type Bi } from "../../lib/i18n";
@@ -145,5 +146,48 @@ export function TextLink({ to, children }: { to: string; children: React.ReactNo
       {children}
       <ArrowRight className="size-4" />
     </Link>
+  );
+}
+
+/** Fait apparaître son contenu en fondu à l'entrée dans le viewport. */
+export function Reveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ transitionDelay: `${delay}ms` }}
+      className={cn("mv-reveal", visible && "is-visible", className)}
+    >
+      {children}
+    </div>
   );
 }

@@ -1,16 +1,16 @@
 import { Link } from "wouter";
 import type { LucideIcon } from "lucide-react";
 import { ArrowRight, Bus, Briefcase, Compass, GraduationCap, HeartHandshake, Map, ShieldCheck, Star, Users, Route } from "lucide-react";
-import { ButtonLink, Eyebrow, Photo, Section, SectionHeading, TextLink, Provisional } from "../components/site/ui";
+import { ButtonLink, Eyebrow, Photo, Reveal, Section, SectionHeading, TextLink, Provisional } from "../components/site/ui";
 import { destinations } from "../data/content";
 import { useLang } from "../lib/i18n";
 
 const services = [
-  { icon: GraduationCap, title: { fr: "Voyages d'études", en: "Study trips" }, text: { fr: "Sorties pédagogiques, visites scientifiques et institutionnelles.", en: "Educational outings, scientific and institutional visits." }, to: "/voyages-etudes" },
-  { icon: Bus, title: { fr: "Excursions scolaires", en: "School excursions" }, text: { fr: "Transport, encadrement et logistique pour les groupes.", en: "Transport, supervision and logistics for groups." }, to: "/services" },
-  { icon: Compass, title: { fr: "Circuits touristiques", en: "Guided tours" }, text: { fr: "Circuits dans les régions majeures de l'île.", en: "Tours across the island's key regions." }, to: "/services" },
-  { icon: Briefcase, title: { fr: "Voyages d'entreprise", en: "Corporate travel" }, text: { fr: "Team building, séminaires et voyages de découverte.", en: "Team building, seminars and discovery trips." }, to: "/services" },
-  { icon: Map, title: { fr: "Voyages sur mesure", en: "Tailor-made trips" }, text: { fr: "Programme construit selon vos besoins et votre budget.", en: "A programme built around your needs and budget." }, to: "/services" },
+  { icon: GraduationCap, img: "/images/svc-etudes.jpg", title: { fr: "Voyages d'études", en: "Study trips" }, text: { fr: "Sorties pédagogiques, visites scientifiques et institutionnelles.", en: "Educational outings, scientific and institutional visits." }, to: "/voyages-etudes" },
+  { icon: Bus, img: "/images/svc-excursion.jpg", title: { fr: "Excursions scolaires", en: "School excursions" }, text: { fr: "Transport, encadrement et logistique pour les groupes.", en: "Transport, supervision and logistics for groups." }, to: "/services" },
+  { icon: Compass, img: "/images/svc-circuit.jpg", title: { fr: "Circuits touristiques", en: "Guided tours" }, text: { fr: "Circuits dans les régions majeures de l'île.", en: "Tours across the island's key regions." }, to: "/services" },
+  { icon: Briefcase, img: "/images/svc-corporate.jpg", title: { fr: "Voyages d'entreprise", en: "Corporate travel" }, text: { fr: "Team building, séminaires et voyages de découverte.", en: "Team building, seminars and discovery trips." }, to: "/services" },
+  { icon: Map, img: "/images/svc-mesure.jpg", title: { fr: "Voyages sur mesure", en: "Tailor-made trips" }, text: { fr: "Programme construit selon vos besoins et votre budget.", en: "A programme built around your needs and budget." }, to: "/services" },
 ];
 
 const advantages = [
@@ -34,7 +34,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="relative flex min-h-[92vh] items-end overflow-hidden bg-forest">
-        <img src="/images/baobab.jpg" alt={t({ fr: "Avenue des Baobabs à Madagascar", en: "Avenue of the Baobabs in Madagascar" })} className="absolute inset-0 size-full object-cover" />
+        <img src="/images/baobab.jpg" alt={t({ fr: "Avenue des Baobabs à Madagascar", en: "Avenue of the Baobabs in Madagascar" })} className="mv-zoom absolute inset-0 size-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-forest via-forest/55 to-forest/10" />
         <div className="relative mx-auto w-full max-w-[1200px] px-5 pb-16 pt-40 md:px-8 md:pb-24">
           <p className="mv-rise mb-4 text-xs font-bold uppercase tracking-[0.2em] text-sun">
@@ -63,9 +63,11 @@ export default function Home() {
           title={t({ fr: "Un service pour chaque type de voyage", en: "A service for every kind of trip" })}
           intro={t({ fr: "Des établissements scolaires aux entreprises, chaque programme est construit avec vous.", en: "From schools to companies, every programme is built with you." })}
         />
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-5">
-          {services.map((s) => (
-            <Link3 key={s.title.fr} to={s.to} icon={s.icon} title={t(s.title)} text={t(s.text)} />
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          {services.map((s, i) => (
+            <Reveal key={s.title.fr} delay={i * 90}>
+              <ServiceCard to={s.to} img={s.img} icon={s.icon} title={t(s.title)} text={t(s.text)} />
+            </Reveal>
           ))}
         </div>
       </Section>
@@ -80,8 +82,8 @@ export default function Home() {
           <TextLink to="/destinations">{t({ fr: "Toutes les destinations", en: "All destinations" })}</TextLink>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {featured.map((d) => (
-            <Link to={`/destinations`} key={d.slug} className="group overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-lg">
+          {featured.map((d, i) => (
+            <Reveal key={d.slug} delay={i * 120}><Link to={`/destinations`} className="group block h-full overflow-hidden rounded-xl bg-white shadow-sm transition-shadow hover:shadow-lg">
               <div className="aspect-[4/3] overflow-hidden">
                 <Photo src={d.image} alt={d.name} className="size-full transition-transform duration-700 group-hover:scale-105" />
               </div>
@@ -90,7 +92,7 @@ export default function Home() {
                 <h3 className="mt-2 text-2xl text-forest">{d.name}</h3>
                 <p className="mt-2 text-muted">{t(d.description)}</p>
               </div>
-            </Link>
+            </Link></Reveal>
           ))}
         </div>
       </Section>
@@ -98,13 +100,13 @@ export default function Home() {
       {/* Study trips */}
       <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="relative">
+          <Reveal className="relative">
             <img src="/images/lemur.jpg" alt={t({ fr: "Lémurien dans la forêt d'Andasibe", en: "Lemur in Andasibe forest" })} loading="lazy" className="aspect-[4/5] w-full rounded-xl object-cover shadow-xl" />
             <div className="absolute -bottom-6 -right-4 hidden max-w-[240px] rounded-xl bg-white p-5 shadow-lg md:block">
               <p className="font-display text-2xl text-forest">{t({ fr: "Apprendre sur le terrain", en: "Learning in the field" })}</p>
               <p className="mt-1 text-sm text-muted">{t({ fr: "Biologie, géologie, géographie, histoire.", en: "Biology, geology, geography, history." })}</p>
             </div>
-          </div>
+          </Reveal>
           <div>
             <Eyebrow>{t({ fr: "Voyages d'études", en: "Study trips" })}</Eyebrow>
             <h2 className="text-4xl text-forest md:text-[44px]">{t({ fr: "Transformer une sortie en véritable leçon", en: "Turn a trip into a real lesson" })}</h2>
@@ -137,12 +139,12 @@ export default function Home() {
           title={t({ fr: "Pourquoi nous faire confiance", en: "Why trust us" })}
         />
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {advantages.map((a) => (
-            <div key={a.title.fr}>
+          {advantages.map((a, i) => (
+            <Reveal key={a.title.fr} delay={i * 100}><div>
               <a.icon className="size-7 text-sun" />
               <h3 className="mt-4 text-xl text-paper">{t(a.title)}</h3>
               <p className="mt-2 text-paper/75">{t(a.text)}</p>
-            </div>
+            </div></Reveal>
           ))}
         </div>
       </Section>
@@ -154,12 +156,12 @@ export default function Home() {
         </div>
         <div className="mt-4"><Provisional /></div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {testimonials.map((tm) => (
-            <figure key={tm.who.fr} className="flex flex-col rounded-xl bg-white p-7 shadow-sm">
+          {testimonials.map((tm, i) => (
+            <Reveal key={tm.who.fr} delay={i * 110}><figure className="flex h-full flex-col rounded-xl bg-white p-7 shadow-sm">
               <div className="flex gap-1 text-sun">{[...Array(5)].map((_, i) => <Star key={i} className="size-4 fill-current" />)}</div>
               <blockquote className="mt-4 flex-1 text-forest">« {t(tm.quote)} »</blockquote>
               <figcaption className="mt-5 text-sm font-semibold text-muted">{t(tm.who)}</figcaption>
-            </figure>
+            </figure></Reveal>
           ))}
         </div>
       </Section>
@@ -182,14 +184,19 @@ export default function Home() {
   );
 }
 
-function Link3({ to, icon: Icon, title, text }: { to: string; icon: LucideIcon; title: string; text: string }) {
+function ServiceCard({ to, img, icon: Icon, title, text }: { to: string; img: string; icon: LucideIcon; title: string; text: string }) {
   return (
-    <Link to={to} className="group flex flex-col rounded-xl border border-line bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-ocean/30 hover:shadow-md">
-      <span className="inline-flex size-11 items-center justify-center rounded-full bg-sand text-forest transition-colors group-hover:bg-forest group-hover:text-paper">
-        <Icon className="size-5" />
-      </span>
-      <h3 className="mt-5 text-xl text-forest">{title}</h3>
-      <p className="mt-2 text-[15px] text-muted">{text}</p>
+    <Link to={to} className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <div className="relative aspect-[4/3] overflow-hidden">
+        <img src={img} alt="" aria-hidden loading="lazy" className="size-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <span className="absolute left-4 top-4 inline-flex size-10 items-center justify-center rounded-full bg-paper/95 text-forest shadow-sm">
+          <Icon className="size-5" />
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="text-xl text-forest">{title}</h3>
+        <p className="mt-2 text-[15px] text-muted">{text}</p>
+      </div>
     </Link>
   );
 }

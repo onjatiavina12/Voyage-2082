@@ -1,9 +1,11 @@
 import { Check, GraduationCap, Bus, Compass, Briefcase, Map } from "lucide-react";
-import { ButtonLink, Eyebrow, Section } from "../components/site/ui";
+import { ButtonLink, Eyebrow, Reveal, Section } from "../components/site/ui";
 import { useLang, type Bi } from "../lib/i18n";
 
 interface Service {
   icon: typeof Check;
+  img: string;
+  imgAlt: Bi;
   title: Bi;
   intro: Bi;
   points: Bi[];
@@ -13,6 +15,8 @@ interface Service {
 const services: Service[] = [
   {
     icon: GraduationCap,
+    img: "/images/svc-etudes.jpg",
+    imgAlt: { fr: "Groupe d'élèves en sortie sur un sentier", en: "Students on a field trip along a path" },
     title: { fr: "Voyages d'études", en: "Study trips" },
     intro: { fr: "Des sorties qui prolongent la salle de classe, du terrain à l'analyse.", en: "Outings that extend the classroom, from fieldwork to analysis." },
     points: [
@@ -26,6 +30,8 @@ const services: Service[] = [
   },
   {
     icon: Bus,
+    img: "/images/svc-excursion.jpg",
+    imgAlt: { fr: "Groupe en randonnée sur un sentier de montagne", en: "Group hiking a mountain trail" },
     title: { fr: "Excursions scolaires et universitaires", en: "School and university excursions" },
     intro: { fr: "Une logistique complète pour les groupes, du départ au retour.", en: "Complete logistics for groups, from departure to return." },
     points: [
@@ -38,6 +44,8 @@ const services: Service[] = [
   },
   {
     icon: Compass,
+    img: "/images/svc-circuit.jpg",
+    imgAlt: { fr: "Rizières en terrasses et rivière à Madagascar", en: "Terraced rice fields and river in Madagascar" },
     title: { fr: "Circuits touristiques", en: "Guided tours" },
     intro: { fr: "Les grandes régions de Madagascar, des paysages aux traditions.", en: "Madagascar's major regions, from landscapes to traditions." },
     points: [
@@ -49,6 +57,8 @@ const services: Service[] = [
   },
   {
     icon: Briefcase,
+    img: "/images/svc-corporate.jpg",
+    imgAlt: { fr: "Équipe réunie en montagne pour un team building", en: "Team gathered in the mountains for team building" },
     title: { fr: "Voyages d'entreprise", en: "Corporate travel" },
     intro: { fr: "Des séjours qui renforcent la cohésion et stimulent les équipes.", en: "Trips that strengthen cohesion and energise teams." },
     points: [
@@ -60,6 +70,8 @@ const services: Service[] = [
   },
   {
     icon: Map,
+    img: "/images/svc-mesure.jpg",
+    imgAlt: { fr: "Paysans au travail dans les rizières des hauts plateaux", en: "Farmers at work in highland rice fields" },
     title: { fr: "Voyages sur mesure", en: "Tailor-made trips" },
     intro: { fr: "Un voyage dessiné pour vous, du premier échange au dernier jour.", en: "A trip designed for you, from the first exchange to the last day." },
     points: [
@@ -77,14 +89,19 @@ export default function Services() {
     <>
       <PageHero
         eyebrow={t({ fr: "Nos services", en: "Our services" })}
+        image="/images/hero-services.jpg"
         title={t({ fr: "Des prestations pensées pour chaque voyage", en: "Services designed for every trip" })}
         text={t({ fr: "Cinq offres complémentaires, du voyage pédagogique au séjour sur mesure.", en: "Five complementary offers, from educational trips to tailor-made stays." })}
       />
       <Section>
         <div className="grid gap-6 lg:grid-cols-2">
           {services.map((s, i) => (
-            <article key={s.title.fr} className={`flex flex-col rounded-xl border border-line bg-white p-8 shadow-sm md:p-10 ${i === 0 ? "lg:col-span-2" : ""}`}>
-              <div className={`flex flex-col gap-6 ${i === 0 ? "lg:flex-row lg:gap-12" : ""}`}>
+            <Reveal key={s.title.fr} delay={(i % 2) * 120} className={i === 0 ? "lg:col-span-2" : ""}>
+            <article className="flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+              <div className={`relative overflow-hidden ${i === 0 ? "aspect-[16/7]" : "aspect-[16/9]"}`}>
+                <img src={s.img} alt={t(s.imgAlt)} loading="lazy" className="size-full object-cover transition-transform duration-700 hover:scale-105" />
+              </div>
+              <div className={`flex flex-1 flex-col gap-6 p-8 md:p-10 ${i === 0 ? "lg:flex-row lg:gap-12" : ""}`}>
                 <div className={i === 0 ? "lg:w-1/3" : ""}>
                   <span className="inline-flex size-12 items-center justify-center rounded-full bg-sand text-forest">
                     <s.icon className="size-6" />
@@ -103,6 +120,7 @@ export default function Services() {
                 </ul>
               </div>
             </article>
+            </Reveal>
           ))}
         </div>
       </Section>
@@ -119,9 +137,16 @@ export default function Services() {
   );
 }
 
-export function PageHero({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
+export function PageHero({ eyebrow, title, text, image }: { eyebrow: string; title: string; text: string; image?: string }) {
   return (
-    <section className="bg-forest pb-20 pt-40 text-paper md:pb-24 md:pt-48">
+    <section className="relative isolate overflow-hidden bg-forest pb-20 pt-40 text-paper md:pb-24 md:pt-48">
+      {image && (
+        <>
+          <img src={image} alt="" aria-hidden className="mv-zoom absolute inset-0 -z-10 size-full object-cover" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-forest via-forest/80 to-forest/40" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-forest/70 to-transparent" />
+        </>
+      )}
       <div className="mx-auto max-w-[1200px] px-5 md:px-8">
         <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-sun">{eyebrow}</p>
         <h1 className="max-w-3xl text-5xl md:text-6xl">{title}</h1>

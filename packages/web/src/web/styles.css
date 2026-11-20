@@ -159,7 +159,31 @@
 .mv-rise {
   animation: mv-rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
+.mv-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.mv-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@keyframes mv-zoom {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+.mv-zoom {
+  animation: mv-zoom 16s ease-out both;
+}
+@keyframes mv-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.mv-float {
+  animation: mv-float 6s ease-in-out infinite;
+}
 @media (prefers-reduced-motion: reduce) {
-  .mv-rise { animation: none; }
+  .mv-rise, .mv-zoom, .mv-float { animation: none; }
+  .mv-reveal { opacity: 1; transform: none; transition: none; }
   html { scroll-behavior: auto; }
 }

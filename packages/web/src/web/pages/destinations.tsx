@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
-import { ButtonLink, Photo, Section } from "../components/site/ui";
+import { ButtonLink, Photo, Reveal, Section } from "../components/site/ui";
 import { categories, destinations, type Destination } from "../data/content";
 import { useLang } from "../lib/i18n";
 import { cn } from "../lib/utils";
@@ -30,6 +30,7 @@ export default function Destinations() {
   return (
     <>
       <PageHero
+        image="/images/hero-destinations.jpg"
         eyebrow={t({ fr: "Destinations", en: "Destinations" })}
         title={t({ fr: "Huit destinations, mille visages de Madagascar", en: "Eight destinations, a thousand faces of Madagascar" })}
         text={t({ fr: "Forêts, baobabs, lagons et hauts plateaux : choisissez les lieux qui correspondent à votre projet.", en: "Forests, baobabs, lagoons and highlands: choose the places that match your project." })}
@@ -54,8 +55,9 @@ export default function Destinations() {
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((d) => (
-            <article key={d.slug} className="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
+          {list.map((d, i) => (
+            <Reveal key={d.slug} delay={(i % 3) * 120}>
+            <article className="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg">
               <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[4/3] lg:aspect-[4/4.2]">
                 <Photo src={d.image} alt={d.name} label={{ fr: "Photo à venir", en: "Photo coming soon" }} className="size-full transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-5">
@@ -78,6 +80,7 @@ export default function Destinations() {
                 </button>
               </div>
             </article>
+            </Reveal>
           ))}
         </div>
         {list.length === 0 && <p className="mt-10 text-muted">{t({ fr: "Aucune destination dans cette catégorie.", en: "No destination in this category." })}</p>}

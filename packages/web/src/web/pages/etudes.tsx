@@ -1,5 +1,5 @@
 import { Check, Compass, Bus, MessageSquare, Route, Microscope, Landmark, Users } from "lucide-react";
-import { ButtonLink, Eyebrow, Photo, Provisional, Section, SectionHeading } from "../components/site/ui";
+import { ButtonLink, Eyebrow, Photo, Provisional, Reveal, Section, SectionHeading } from "../components/site/ui";
 import { destinations } from "../data/content";
 import { useLang } from "../lib/i18n";
 import { PageHero } from "./services";
@@ -41,6 +41,7 @@ export default function Etudes() {
   return (
     <>
       <PageHero
+        image="/images/hero-etudes.jpg"
         eyebrow={t({ fr: "Voyages d'études", en: "Study trips" })}
         title={t({ fr: "Apprendre à Madagascar, sur le terrain", en: "Learning in Madagascar, in the field" })}
         text={t({
@@ -48,6 +49,18 @@ export default function Etudes() {
           en: "A service for schools, high schools, universities and training centres: learning goals, logistics and full support.",
         })}
       />
+
+      {/* Field photos */}
+      <Section className="pb-0 md:pb-0">
+        <div className="grid gap-6 md:grid-cols-5">
+          <Reveal className="md:col-span-3">
+            <img src="/images/svc-etudes.jpg" alt={t({ fr: "Élèves en sortie pédagogique sur un sentier", en: "Students on an educational outing on a path" })} loading="lazy" className="aspect-[4/3] w-full rounded-xl object-cover shadow-lg" />
+          </Reveal>
+          <Reveal delay={150} className="md:col-span-2">
+            <img src="/images/svc-excursion.jpg" alt={t({ fr: "Groupe en randonnée pendant une excursion", en: "Group hiking during an excursion" })} loading="lazy" className="aspect-[4/3] w-full rounded-xl object-cover shadow-lg md:aspect-auto md:h-full" />
+          </Reveal>
+        </div>
+      </Section>
 
       {/* Objectives */}
       <Section>
